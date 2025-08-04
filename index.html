@@ -368,12 +368,29 @@ menuBtn.addEventListener('click', () => {
   }
 </style>
 
-<div style="position: fixed; bottom: 20px; right: 20px; width: 300px; height: 400px; background: #fff; border: 1px solid #ccc; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.15); overflow: hidden; z-index: 9999; font-family: Arial, sans-serif;">
+
+<div id="newsToggle" style="position: fixed; bottom: 20px; right: 20px; width: 140px; background: #d4af37; color: #000; font-weight: bold; padding: 10px; text-align: center; font-size: 14px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.15); cursor: pointer; z-index: 10000;">
+  Show Forex News
+</div>
+
+<div id="newsWidget" style="display: none; position: fixed; bottom: 70px; right: 20px; width: 300px; height: 400px; background: #fff; border: 1px solid #ccc; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.15); overflow: hidden; z-index: 9999; font-family: Arial, sans-serif;">
   <div style="background: #d4af37; color: #000; font-weight: bold; padding: 10px; text-align: center; font-size: 16px;">
     Forex News
   </div>
   <iframe src="https://widget.myfxbook.com/widget/news.html" style="width: 100%; height: 350px; border: none;"></iframe>
 </div>
+
+<script>
+  const toggleBtn = document.getElementById('newsToggle');
+  const widget = document.getElementById('newsWidget');
+  let isVisible = false;
+
+  toggleBtn.onclick = function() {
+    isVisible = !isVisible;
+    widget.style.display = isVisible ? 'block' : 'none';
+    toggleBtn.innerText = isVisible ? 'Hide Forex News' : 'Show Forex News';
+  };
+</script>
 
 </body>
 </html>
