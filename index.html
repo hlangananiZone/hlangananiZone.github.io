@@ -370,17 +370,12 @@ menuBtn.addEventListener('click', () => {
 
 <button id="newsToggleBtn">News</button>
 
-<div id="newsPanel">
-  <header>Forex News</header>
-  <iframe src="https://www.forexfactory.com/forex-news" title="Forex News"></iframe>
+<div style="position: fixed; top: 20px; right: 20px; width: 320px; height: 420px; background: rgba(255,255,255,0.95); border: 1px solid #ccc; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.15); overflow: hidden; z-index: 9999; font-family: Arial, sans-serif;">
+  <div style="background: #d4af37; color: #000; font-weight: bold; padding: 10px; text-align: center; font-size: 16px;">
+    Economic Calendar
+  </div>
+  <iframe src="https://www.forexfactory.com/ffwidget.php?widget=calendar&theme=light" style="width: 100%; height: 370px; border: none;"></iframe>
 </div>
 
-<script>
-  const newsBtn = document.getElementById('newsToggleBtn');
-  const newsPanel = document.getElementById('newsPanel');
-  newsBtn.addEventListener('click', () => {
-    newsPanel.classList.toggle('open');
-  });
-</script>
 </body>
 </html>
