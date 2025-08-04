@@ -1,7 +1,20 @@
+html
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  
+    
+<div class="menu-wrapper">
+  <div class="menu-icon" onclick="toggleMenu()">⋮</div>
+  <div class="menu-dropdown" id="dropdown">
+    <a href="#plans">Mentorship Tiers</a>
+    <a href="#contact">Register / Contact</a>
+    <a href="#faq">FAQ</a>
+    <a href="#">Payment Info</a>
+    <a href="#">Telegram Group</a>
+    <a href="#">YouTube</a>
+  </div>
+</div>
+
 <style>
   #faq h4 {
     cursor: pointer;
@@ -144,6 +157,78 @@
     });
   });
 </script>
+```html
+<!-- 3-dot menu container -->
+<div class="menu-wrapper">
+  <button id="menu-btn" aria-label="Menu">&#x22EE;</button>
+  <div id="menu-dropdown" class="menu-dropdown">
+    <a href="#registration">Registration</a>
+    <a href="#plans">Mentorship Tiers</a>
+    <a href="#payment">Payment</a>
+    <a href="#channels">Other Channels</a>
+  </div>
+</div>
 
+<style>
+  .menu-wrapper {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    z-index: 1000;
+  }
+  #menu-btn {
+    font-size: 28px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: #d4af37;
+  }
+  .menu-dropdown {
+    display: none;
+    background: #111;
+    border: 1px solid #d4af37;
+    border-radius: 5px;
+    padding: 10px;
+    margin-top: 5px;
+    min-width: 150px;
+    text-align: right;
+  }
+  .menu-dropdown a {
+    display: block;
+    color: #d4af37;
+    text-decoration: none;
+    padding: 8px 5px;
+    border-bottom: 1px solid #333;
+  }
+  .menu-dropdown a:last-child {
+    border-bottom: none;
+  }
+  .menu-dropdown a:hover {
+    background: #d4af37;
+    color: #111;
+  }
+</style>
+
+<script>
+  const menuBtn = document.getElementById('menu-btn');
+  const menuDropdown = document.getElementById('menu-dropdown');
+menuBtn.addEventListener('click', () => {
+    menuDropdown.style.display = menuDropdown.style.display === 'block' ? 'none' : 'block';
+  });
+
+  window.addEventListener('click', (e) => {
+    if (!menuBtn.contains(e.target) && !menuDropdown.contains(e.target)) {
+      menuDropdown.style.display = 'none';
+    }
+  });
+</script>
+```html
+<script>
+  function toggleMenu() {
+    const dropdown = document.getElementById("dropdown");
+    dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+  }
+</script>
+```
 </body>
 </html>
