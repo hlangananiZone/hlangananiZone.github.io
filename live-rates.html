@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="UTF-8">
   <title>Live Currency Rates</title>
   <style>
     body {
-      background: #000;
+      background-color: #000;
       color: #d4af37;
       font-family: Arial, sans-serif;
       padding: 20px;
       text-align: center;
     }
     h1 {
+      font-size: 32px;
       margin-bottom: 10px;
     }
     table {
@@ -23,70 +23,39 @@
     }
     th, td {
       border: 1px solid #d4af37;
-      padding: 10px 15px;
-      font-size: 18px;
+      padding: 12px;
+      font-size: 16px;
     }
     th {
-      background: #222;
-    }
-    td {
-      background: #111;
+      background-color: #1a1a1a;
     }
   </style>
 </head>
 <body>
-
-  <h1>Live Currency Conversion Rates</h1>
-  <p>Base Currency: <strong id="base-currency">USD</strong></p>
-
-  <table>
-    <thead>
-      <tr>
-        <th>Currency</th>
-        <th>Rate</th>
-      </tr>
-    </thead>
-    <tbody id="rates-table-body">
-      <tr><td colspan="2">Loading rates...</td></tr>
-    </tbody>
+  <h1>Live Currency<br>Conversion Rates</h1>
+  <p><strong>Base Currency: USD</strong></p>
+  <table id="rates-table">
+    <tr><th>Currency</th><th>Rate</th></tr>
   </table>
 
   <script>
-    async function fetchRates() {
-      try {
-        const response = await fetch('https://open.er-api.com/v6/latest/USD');
-        if (!response.ok) throw new Error('Network response was not ok');
+    const table = document.getElementById("rates-table");
+    const currencies = ["EUR", "GBP", "JPY", "AUD", "CAD", "CHF", "CNY", "ZAR", "INR", "BRL"];
 
-        const data = await response.json();
-
-        const rates = data.rates;
-        const tbody = document.getElementById('rates-table-body');
-        const baseCurrency = data.base_code || 'USD';
-        document.getElementById('base-currency').textContent = baseCurrency;
-
-        tbody.innerHTML = ''; // clear loading message
-
-        // We'll list top 10 currencies for brevity
-        const currenciesToShow = ['EUR', 'GBP', 'JPY', 'AUD', 'CAD', 'CHF', 'CNY', 'ZAR', 'INR', 'BRL'];
-
-        currenciesToShow.forEach(currency => {
-          const rate = rates[currency];
+    fetch("https://api.exchangerate.host/latest?base=USD")
+      .then(response => response.json())
+      .then(data => {
+        currencies.forEach(code => {
+          const rate = data.rates[code];
           if (rate) {
-            const row = document.createElement('tr');
-            row.innerHTML = `<td>currency</td><td>{rate.toFixed(4)}</td>`;
-            tbody.appendChild(row);
+            const row = `<tr><td>code</td><td>{rate.toFixed(4)}</td></tr>`;
+            table.innerHTML += row;
           }
         });
-
-      } catch (error) {
-        document.getElementById('rates-table-body').innerHTML =
-          `<tr><td colspan="2">Failed to load rates. Please try again later.</td></tr>`;
-        console.error('Error fetching rates:', error);
-      }
-    }
-
-    fetchRates();
+      })
+      .catch(() => {
+        table.innerHTML += `<tr><td colspan="2">Failed to load rates. Please try again later.</td></tr>`;
+      });
   </script>
-
 </body>
 </html>
