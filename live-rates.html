@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Live Currency Rates</title>
   <style>
     body {
@@ -44,21 +44,28 @@
   </table>
 
   <script>
-    fetch('https://api.exchangerate.host/latest?base=USD')
+    const apiKey = '7698345d49e3ef819054f233';
+    const url = `https://v6.exchangerate-api.com/v6/${apiKey}/latest/USD`;
+
+    fetch(url)
       .then(response => response.json())
       .then(data => {
         const tbody = document.getElementById('rates-body');
-        tbody.innerHTML = '';
+        if(data.result !== 'success') {
+          tbody.innerHTML = `<tr><td colspan="2">Failed to load rates. Please try again later.</td></tr>`;
+          return;
+        
+        tbody.innerHTML = ”;
         const currencies = ['ZAR', 'EUR', 'GBP', 'JPY', 'AUD', 'CAD'];
-        currencies.forEach(code => {
-          const rate = data.rates[code];
-          if (rate) {
-            const row = `<tr><td>code</td><td>{rate.toFixed(2)}</td></tr>`;
+        currencies.forEach(code => 
+          const rate = data.conversion_rates[code];
+          if(rate) 
+            const row = `<tr><td>{code}</td><td>${rate.toFixed(4)}</td></tr>`;
             tbody.innerHTML += row;
           }
         });
       })
-      .catch(error => {
+      .catch(() => {
         document.getElementById('rates-body').innerHTML = `<tr><td colspan="2">Failed to load rates. Please try again later.</td></tr>`;
       });
   </script>
