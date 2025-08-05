@@ -1,60 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Live Currency Rates</title>
   <style>
     body {
       background-color: #000;
       color: #d4af37;
       font-family: Arial, sans-serif;
-      padding: 20px;
       text-align: center;
-    }
-    h1 {
-      font-size: 32px;
-      margin-bottom: 10px;
+      padding: 20px;
     }
     table {
       margin: 0 auto;
       border-collapse: collapse;
       width: 90%;
-      max-width: 600px;
+      max-width: 500px;
+      color: #fff;
     }
     th, td {
       border: 1px solid #d4af37;
-      padding: 12px;
-      font-size: 16px;
+      padding: 10px;
     }
     th {
-      background-color: #1a1a1a;
+      background-color: #222;
     }
   </style>
 </head>
 <body>
-  <h1>Live Currency<br>Conversion Rates</h1>
-  <p><strong>Base Currency: USD</strong></p>
-  <table id="rates-table">
-    <tr><th>Currency</th><th>Rate</th></tr>
+  <h2>Live Currency<br>Conversion Rates</h2>
+  <p><strong>Base Currency:</strong> <span style="color:#fff;">USD</span></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Currency</th>
+        <th>Rate</th>
+      </tr>
+    </thead>
+    <tbody id="rates-table">
+      <tr><td colspan="2">Loading...</td></tr>
+    </tbody>
   </table>
 
   <script>
     const table = document.getElementById("rates-table");
     const currencies = ["EUR", "GBP", "JPY", "AUD", "CAD", "CHF", "CNY", "ZAR", "INR", "BRL"];
+    const API_KEY = "7698345d49e3ef819054f233";
 
-    fetch("https://api.exchangerate.host/latest?base=USD")
-      .then(response => response.json())
+    fetch(`https://v6.exchangerate-api.com/v6/${API_KEY}/latest/USD`)
+      .then(res => res.json())
       .then(data => {
-        currencies.forEach(code => {
-          const rate = data.rates[code];
-          if (rate) {
-            const row = `<tr><td>code</td><td>{rate.toFixed(4)}</td></tr>`;
-            table.innerHTML += row;
-          }
-        });
+        table.innerHTML = "";
+        if (data.result === "success") 
+          currencies.forEach(code => 
+            const rate = data.conversion_rates[code];
+            if (rate) 
+              const row = `<tr><td>{code}</td><td>rate.toFixed(4)</td></tr>`;
+              table.innerHTML += row;
+            );
+         else 
+          table.innerHTML = `<tr><td colspan="2">Error:{data['error-type']}</td></tr>`;
+        }
       })
       .catch(() => {
-        table.innerHTML += `<tr><td colspan="2">Failed to load rates. Please try again later.</td></tr>`;
+        table.innerHTML = `<tr><td colspan="2">Failed to load rates. Please try again later.</td></tr>`;
       });
   </script>
 </body>
