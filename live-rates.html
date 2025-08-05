@@ -1,62 +1,96 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Live Currency Rates</title>
-  <style>
-    body {
-      background-color: #000;
-      color: #d4af37;
-      font-family: Arial, sans-serif;
-      padding: 40px;
-      text-align: center;
-    }
-    h1 {
-      font-size: 32px;
-      margin-bottom: 20px;
-    }
-    .rates {
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-      font-size: 20px;
-      max-width: 400px;
-      margin: 0 auto;
-    }
-    .rate {
-      background: #1a1a1a;
-      padding: 15px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px #d4af37;
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Live Currency Rates</title>
+<style>
+  body {
+    background: #000;
+    color: #d4af37;
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    max-width: 900px;
+    margin: auto;
+  }
+  h1 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+  }
+  th, td {
+    border: 1px solid #d4af37;
+    padding: 12px;
+    text-align: center;
+  }
+  th {
+    background-color: #222;
+  }
+  td {
+    background-color: #111;
+  }
+  #error {
+    color: red;
+    text-align: center;
+  }
+</style>
 </head>
 <body>
-  <h1>Live Currency Rates</h1>
-  <div class="rates" id="rates">
-    <div class="rate">Loading rates...</div>
-  </div>
+<h1>Live Currency Conversion Rates</h1>
+<p>Base Currency: <strong id="baseCurrency">USD</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Currency</th>
+      <th>Rate</th>
+    </tr>
+  </thead>
+  <tbody id="ratesTableBody">
+    <tr><td colspan="2">Loading rates...</td></tr>
+  </tbody>
+</table>
+<p id="error"></p>
 
-  <script>
-    async function fetchRates() {
-      try {
-        const res = await fetch('https://api.exchangerate.host/latest?base=USD&symbols=ZAR,EUR,GBP');
-        const data = await res.json();
-        const rates = data.rates;
-        const container = document.getElementById('rates');
-        container.innerHTML = `
-          <div class="rate">USD to ZAR: rates.ZAR.toFixed(2)</div>
-          <div class="rate">USD to EUR:{rates.EUR.toFixed(2)}</div>
-          <div class="rate">USD to GBP: ${rates.GBP.toFixed(2)}</div>
-        `;
-      } catch (error) {
-        document.getElementById('rates').innerHTML = '<div class="rate">Failed to load rates.</div>';
+<script>
+  const apiKey = 'https://open.er-api.com/v6/latest/USD'; // Free open API URL
+  const ratesTableBody = document.getElementById('ratesTableBody');
+  const errorEl = document.getElementById('error');
+
+  async function fetchRates() {
+    try {
+      const response = await fetch(apiKey);
+      if (!response.ok) throw new Error('Network response was not ok');
+
+      const data = await response.json();
+
+      if (data.result !== 'success') {
+        throw new Error('API returned an error');
       }
-    }
 
-    fetchRates();
-    setInterval(fetchRates, 60000); // Refresh every 60 seconds
-  </script>
+      document.getElementById('baseCurrency').textContent = data.base_code;
+
+      const rates = data.rates;
+      ratesTableBody.innerHTML = '';
+
+      for (const [currency, rate] of Object.entries(rates)) {
+        const row = document.createElement('tr');
+        row.innerHTML = `<td>currency</td><td>{rate.toFixed(4)}</td>`;
+        ratesTableBody.appendChild(row);
+      }
+      errorEl.textContent = '';
+    } catch (error) {
+      ratesTableBody.innerHTML = '<tr><td colspan="2">Failed to load rates.</td></tr>';
+      errorEl.textContent = 'Error fetching data. Please try again later.';
+      console.error(error);
+    }
+  }
+
+  fetchRates();
+  setInterval(fetchRates, 5 * 60 * 1000); // Refresh every 5 minutes
+</script>
 </body>
 </html>
