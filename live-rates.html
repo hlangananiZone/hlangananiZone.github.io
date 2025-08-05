@@ -1,66 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
   <title>Live Currency Rates</title>
   <style>
     body {
-      background-color: #000;
+      background: #000;
       color: #d4af37;
       font-family: Arial, sans-serif;
       text-align: center;
-      padding: 20px;
+      padding: 40px;
     }
     table {
       margin: 0 auto;
       border-collapse: collapse;
       width: 90%;
-      max-width: 500px;
-      color: #fff;
+      max-width: 600px;
     }
     th, td {
       border: 1px solid #d4af37;
       padding: 10px;
     }
     th {
-      background-color: #222;
+      background: #1a1a1a;
+    }
+    tr:nth-child(even) {
+      background-color: #111;
     }
   </style>
 </head>
 <body>
-  <h2>Live Currency<br>Conversion Rates</h2>
-  <p><strong>Base Currency:</strong> <span style="color:#fff;">USD</span></p>
+  <h1>Live Currency Rates (Base: USD)</h1>
   <table>
     <thead>
       <tr>
         <th>Currency</th>
         <th>Rate</th>
       </tr>
-      </thead>
-    <tbody id="rates-table">
+    </thead>
+    <tbody id="rates-body">
       <tr><td colspan="2">Loading...</td></tr>
     </tbody>
   </table>
 
   <script>
-    const table = document.getElementById("rates-table");
-    const currencies = ["EUR", "GBP", "JPY", "AUD", "CAD", "CHF", "CNY", "ZAR", "INR", "BRL"];
-
-    fetch("https://api.exchangerate.host/latest?base=USD")
+    fetch('https://api.exchangerate.host/latest?base=USD')
       .then(response => response.json())
       .then(data => {
-        table.innerHTML = "";
+        const tbody = document.getElementById('rates-body');
+        tbody.innerHTML = '';
+        const currencies = ['ZAR', 'EUR', 'GBP', 'JPY', 'AUD', 'CAD'];
         currencies.forEach(code => {
           const rate = data.rates[code];
           if (rate) {
-            const row = `<tr><td>code</td><td>{rate.toFixed(4)}</td></tr>`;
-            table.innerHTML += row;
+            const row = `<tr><td>code</td><td>{rate.toFixed(2)}</td></tr>`;
+            tbody.innerHTML += row;
           }
         });
       })
-      .catch(() => {
-        table.innerHTML = `<tr><td colspan="2">Failed to load rates. Please try again later.</td></tr>`;
+      .catch(error => {
+        document.getElementById('rates-body').innerHTML = `<tr><td colspan="2">Failed to load rates. Please try again later.</td></tr>`;
       });
   </script>
 </body>
