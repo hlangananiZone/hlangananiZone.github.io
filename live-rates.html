@@ -37,7 +37,7 @@
         <th>Currency</th>
         <th>Rate</th>
       </tr>
-    </thead>
+      </thead>
     <tbody id="rates-table">
       <tr><td colspan="2">Loading...</td></tr>
     </tbody>
@@ -46,22 +46,18 @@
   <script>
     const table = document.getElementById("rates-table");
     const currencies = ["EUR", "GBP", "JPY", "AUD", "CAD", "CHF", "CNY", "ZAR", "INR", "BRL"];
-    const API_KEY = "7698345d49e3ef819054f233";
 
-    fetch(`https://v6.exchangerate-api.com/v6/${API_KEY}/latest/USD`)
-      .then(res => res.json())
+    fetch("https://api.exchangerate.host/latest?base=USD")
+      .then(response => response.json())
       .then(data => {
         table.innerHTML = "";
-        if (data.result === "success") 
-          currencies.forEach(code => 
-            const rate = data.conversion_rates[code];
-            if (rate) 
-              const row = `<tr><td>{code}</td><td>rate.toFixed(4)</td></tr>`;
-              table.innerHTML += row;
-            );
-         else 
-          table.innerHTML = `<tr><td colspan="2">Error:{data['error-type']}</td></tr>`;
-        }
+        currencies.forEach(code => {
+          const rate = data.rates[code];
+          if (rate) {
+            const row = `<tr><td>code</td><td>{rate.toFixed(4)}</td></tr>`;
+            table.innerHTML += row;
+          }
+        });
       })
       .catch(() => {
         table.innerHTML = `<tr><td colspan="2">Failed to load rates. Please try again later.</td></tr>`;
