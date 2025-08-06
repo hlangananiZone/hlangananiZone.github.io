@@ -86,11 +86,14 @@
       document.getElementById("rates-table").innerHTML = "";
       document.getElementById("error").textContent = "Failed to load rates. Please try again later.";
       console.error("Error fetching rates:", error);
-    }
+  
   }
+}
 
-  fetchRates();
+fetchRates();
+setInterval(fetchRates, 60000);
 </script>
+  
 
 </body>
 </html>
