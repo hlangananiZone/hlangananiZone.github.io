@@ -1,142 +1,125 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Live Currency Rates - Hlanganani Mentorship</title>
-<style>
-  body {
-    font-family: Arial, sans-serif;
-    background: #111;
-    color: #d4af37;
-    margin: 20px;
-  }
-  h1 {
-    text-align: center;
-    margin-bottom: 10px;
-  }
-  table {
-    width: 100%;
-    max-width: 600px;
-    margin: 0 auto;
-    border-collapse: collapse;
-  }
-  th, td {
-    padding: 12px 15px;
-    border-bottom: 1px solid #444;
-    text-align: left;
-  }
-  th {
-    background: #222;
-  }
-  tbody tr:hover {
-    background: #333;
-  }
-  #error {
-    text-align: center;
-    margin-top: 20px;
-    color: #ff4444;
-  }
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Live Rates</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden;
+      font-family: Arial, sans-serif;
+    }
+
+    #chart-background {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: -1;
+      opacity: 0.15;
+    }
+
+    #content {
+      position: relative;
+      z-index: 1;
+      padding: 20px;
+      color: #fff;
+      background-color: rgba(0, 0, 0, 0.6);
+      height: 100%;
+      overflow-y: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      color: #fff;
+    }
+
+    th {
+      background-color: #222;
+    }
+  </style>
 </head>
 <body>
+  <div id="chart-background"></div>
 
-<h1>Live Currency Rates (Base: USD)</h1>
+  <div id="content">
+    <h1>Live Exchange Rates</h1>
+    <table>
+      <thead>
+        <tr>
+          <th>Currency</th>
+          <th>Rate</th>
+        </tr>
+      </thead>
+      <tbody id="rates-table"></tbody>
+    </table>
+    <div id="error" style="color: red; margin-top: 10px;"></div>
+  </div>
+  <script src="https://s3.tradingview.com/tv.js"></script>
+  <script>
+    new TradingView.widget({
+      container_id: "chart-background",
+      width: "100%",
+      height: "100%",
+      symbol: "FOREXCOM:USDZAR",
+      interval: "60",
+      timezone: "Etc/UTC",
+      theme: "dark",
+      style: "1",
+      locale: "en",
+      toolbar_bg: "#000000",
+      enable_publishing: false,
+      hide_top_toolbar: true,
+      hide_legend: true,
+      save_image: false
+    });
+  </script>
 
-<table>
-  <thead>
-    <tr>
-      <th>Currency</th>
-      <th>Rate</th>
-    </tr>
-  </thead>
-  <tbody id="rates-table">
-    <tr><td colspan="2" style="text-align:center;">Loading rates...</td></tr>
-  </tbody>
-</table>
+  <script>
+    const apiKey = "7698345d49e3ef819054f233";
+    const apiURL = `https://v6.exchangerate-api.com/v6/${apiKey}/latest/USD`;
 
-<div id="error"></div>
+    async function fetchRates() {
+      try {
+        const response = await fetch(apiURL);
+        if (!response.ok) throw new Error("Network response was not ok");
+        const data = await response.json();
+        if (data.result !== "success") throw new Error("API returned error");
 
-<script>
-  const apiKey = "7698345d49e3ef819054f233";
-  const apiURL = `https://v6.exchangerate-api.com/v6/${apiKey}/latest/USD`;
+        const ratesTable = document.getElementById("rates-table");
+        ratesTable.innerHTML = "";
 
-  async function fetchRates() {
-    try {
-      const response = await fetch(apiURL);
-      if (!response.ok) throw new Error("Network response was not ok");
-      const data = await response.json();
-      if (data.result !== "success") throw new Error("API returned error");
-
-      const ratesTable = document.getElementById("rates-table");
-      ratesTable.innerHTML = "";
-
-      const rates = data.conversion_rates;
-      for (const [currency, rate] of Object.entries(rates)) {
-        const row = document.createElement("tr");
-        const curCell = document.createElement("td");
-        const rateCell = document.createElement("td");
-        curCell.textContent = currency;
-        rateCell.textContent = rate.toFixed(4);
-        row.appendChild(curCell);
-        row.appendChild(rateCell);
-        ratesTable.appendChild(row);
+        const rates = data.conversion_rates;
+        for (const [currency, rate] of Object.entries(rates)) {
+          const row = document.createElement("tr");
+          const curCell = document.createElement("td");
+          const rateCell = document.createElement("td");
+          curCell.textContent = currency;
+          rateCell.textContent = rate.toFixed(4);
+          row.appendChild(curCell);
+          row.appendChild(rateCell);
+          ratesTable.appendChild(row);
+        }
+      } catch (error) {
+        document.getElementById("rates-table").innerHTML = "";
+        document.getElementById("error").textContent = "Failed to load rates. Please try again later.";
+        console.error("Error fetching rates:", error);
       }
-    } catch (error) {
-      document.getElementById("rates-table").innerHTML = "";
-      document.getElementById("error").textContent = "Failed to load rates. Please try again later.";
-      console.error("Error fetching rates:", error);
-  
-  }
-}
+    }
 
-setInterval(fetchRates, 60);
-</script>
-<style>
-  html, body {
-    margin: 0; padding: 0; height: 100%; overflow: hidden;
-  }
-  #chart-background {
-    position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    z-index: -1;
-    opacity: 0.15; /* very faint so content stands out */
-  }
-  #content {
-    position: relative;
-    z-index: 1;
-    padding: 20px;
-    color: #fff; /* or suitable color for contrast */
-  }
-</style>
-
-<div id="chart-background"></div>
-
-<div id="content">
-  <!-- Your actual content here -->
-  <h1>Live Rates</h1>
-  <div id="rates-table"></div>
-  <div id="error" style="color: red;"></div>
-</div>
-
-<script src="https://s3.tradingview.com/tv.js"></script>
-<script>
-  new TradingView.widget({
-    container_id: "chart-background",
-    width: "100%",
-    height: "100%",
-    symbol: "FOREXCOM:USDRUB",
-    interval: "60",
-    timezone: "Etc/UTC",
-    theme: "dark",
-    style: "1",
-    locale: "en",
-    toolbar_bg: "#000000",
-    enable_publishing: false,
-    hide_top_toolbar: true,
-    hide_legend: true,
-    save_image: false
-  });
-</script>
+    fetchRates();
+    setInterval(fetchRates, 60000);
+  </script>
 </body>
 </html>
+```
