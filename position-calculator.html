@@ -1,121 +1,139 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Position Size Calculator | Hlanganani Mentorship</title>
   <style>
-    /* ---------- Global Styles ---------- */
     body {
-      margin: 0;
-      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-      background: #f4f6f9;
-      color: #222;
-    }
-    header {
-      background: linear-gradient(90deg, #1c1f4a, #2a2f6d);
-      color: white;
-      padding: 15px 20px;
-      text-align: center;
-      font-size: 1.5rem;
-      font-weight: bold;
-      letter-spacing: 1px;
-    }
-    header span {
-      color: #f7c100; /* Gold highlight for mentorship branding */
+      font-family: "Segoe UI", Tahoma, sans-serif;
+      background: linear-gradient(135deg, #0d1326, #1c1f4a);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem;
     }
 
-    /* ---------- Container ---------- */
-    .container {
-      max-width: 600px;
-      margin: 40px auto;
-      padding: 25px;
-      background: white;
-      border-radius: 16px;
-      box-shadow: 0 6px 14px rgba(0,0,0,0.15);
+    .card {
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 1.5rem;
+      padding: 2rem;
+      max-width: 500px;
+      width: 100%;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+      animation: fadeIn 0.6s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     h2 {
       text-align: center;
-      margin-bottom: 20px;
-      color: #1c1f4a;
+      margin-bottom: 1rem;
+      font-size: 1.6rem;
+      color: #f7c100;
+    }
+
+    p {
+      text-align: center;
+      margin-bottom: 2rem;
+      font-size: 0.95rem;
+      color: #ddd;
     }
 
     label {
       font-weight: 600;
-      margin-top: 10px;
+      margin-bottom: 0.3rem;
       display: block;
+      color: #f7c100;
     }
 
-    input, select, button {
+    input,
+    select {
       width: 100%;
-      padding: 12px;
-      margin: 8px 0 16px 0;
-      border: 1px solid #ccc;
-      border-radius: 8px;
+      padding: 0.9rem;
+      margin-bottom: 1.3rem;
+      border: none;
+      border-radius: 0.8rem;
       font-size: 1rem;
+      background: rgba(255, 255, 255, 0.15);
+      color: white;
+      outline: none;
+    }
+
+    input::placeholder {
+      color: #ccc;
     }
 
     button {
+      width: 100%;
+      padding: 1rem;
       background: #f7c100;
       border: none;
-      color: #1c1f4a;
+      border-radius: 0.8rem;
       font-weight: bold;
+      color: #1c1f4a;
+      font-size: 1rem;
       cursor: pointer;
-      transition: background 0.2s ease-in-out;
+      transition: all 0.3s ease;
     }
+
     button:hover {
-      background: #e0af00;
+      background: #ffda33;
+      transform: translateY(-2px);
     }
 
     .result {
-      margin-top: 20px;
-      padding: 15px;
-      background: #e9f5ff;
-      border-radius: 10px;
-      font-size: 1.1rem;
+      margin-top: 1.5rem;
+      padding: 1rem;
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 0.8rem;
+      font-size: 1rem;
       font-weight: 500;
+      color: #fff;
+      line-height: 1.5;
     }
 
     footer {
+      margin-top: 2rem;
       text-align: center;
-      padding: 20px;
-      margin-top: 40px;
-      background: #1c1f4a;
-      color: white;
-      font-size: 0.9rem;
+      font-size: 0.85rem;
+      color: #aaa;
     }
   </style>
 </head>
 <body>
-  <header>
-    Hlanganani Mentorship <span>Tools</span>
-  </header>
 
-  <div class="container">
-    <h2>Position Size Calculator</h2>
-    <p style="text-align:center;">Learn. Trade. Earn. Manage risk the smart way.</p>
+  <div class="card">
+    <h2>📊 Position Size Calculator</h2>
+    <p>Learn. Trade. Earn. Manage risk like a pro.</p>
 
     <label for="balance">Account Balance (ZAR):</label>
-    <input type="number" id="balance" value="250">
+    <input type="number" id="balance" value="250" placeholder="Enter your account size" />
 
     <label for="risk">Risk % per Trade:</label>
-    <input type="number" id="risk" value="2">
+    <input type="number" id="risk" value="2" placeholder="e.g. 1 or 2" />
 
     <label for="stoploss">Stop Loss (pips):</label>
-    <input type="number" id="stoploss" value="20">
+    <input type="number" id="stoploss" value="20" placeholder="Enter stop loss in pips" />
 
-    <label for="pair">Select Pair:</label>
+    <label for="pair">Trading Pair:</label>
     <select id="pair">
-      <option value="0.10">EUR/USD (0.10 USD/pip per 0.01 lot)</option>
-      <option value="0.10">GBP/USD (0.10 USD/pip per 0.01 lot)</option>
-      <option value="0.10">USD/JPY (0.10 USD/pip per 0.01 lot)</option>
-      <option value="0.05">XAG/USD (0.05 USD per 0.01 lot per cent move)</option>
-      <option value="1.00">XAU/USD (1 USD per $1 move @ 0.01 lot)</option>
+      <option value="0.10">EUR/USD</option>
+      <option value="0.10">GBP/USD</option>
+      <option value="0.10">USD/JPY</option>
+      <option value="0.05">XAG/USD</option>
+      <option value="1.00">XAU/USD</option>
     </select>
 
     <button onclick="calculate()">Calculate</button>
-
     <div class="result" id="result"></div>
   </div>
 
@@ -125,28 +143,23 @@
 
   <script>
     function calculate() {
-      let balanceZAR = parseFloat(document.getElementById('balance').value);
-      let riskPercent = parseFloat(document.getElementById('risk').value) / 100;
-      let stoploss = parseFloat(document.getElementById('stoploss').value);
-      let pipValuePer0_01 = parseFloat(document.getElementById('pair').value);
+      let balanceZAR = parseFloat(document.getElementById("balance").value);
+      let riskPercent = parseFloat(document.getElementById("risk").value) / 100;
+      let stoploss = parseFloat(document.getElementById("stoploss").value);
+      let pipValuePer0_01 = parseFloat(document.getElementById("pair").value);
 
-      // Rough exchange rate ZAR/USD
-      let usdZar = 18;
+      let usdZar = 18; // Approximate conversion
       let balanceUSD = balanceZAR / usdZar;
-
-      // Risk amount in USD
       let riskAmountUSD = balanceUSD * riskPercent;
-
-      // Position size calculation
       let lots = (riskAmountUSD / (stoploss * pipValuePer0_01)) * 0.01;
 
-      document.getElementById('result').innerHTML = `
-        ✅ <strong>Results:</strong><br>
-        Risk Amount: $${riskAmountUSD.toFixed(2)} (~R${(riskAmountUSD*usdZar).toFixed(2)})<br>
+      document.getElementById("result").innerHTML = `
+        ✅ <strong>Results</strong><br>
+        Risk Amount: $${riskAmountUSD.toFixed(2)} (~R${(riskAmountUSD * usdZar).toFixed(2)})<br>
         Stop-Loss: ${stoploss} pips<br>
-        Recommended Lot Size: <strong>${lots.toFixed(3)} lots</strong><br>
+        Recommended Lot Size: <strong>${lots.toFixed(3)} lots</strong>
       `;
     }
   </script>
 </body>
-</html>
+      </html>
