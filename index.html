@@ -1,6 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<style>
+  .bold-button {
+    background-color: #ffc107;
+    color: black;
+    font-weight: bold;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 20px;
+    margin: 10px 0;
+    cursor: pointer;
+    display: block;
+    width: 100%;
+    max-width: 300px;
+  }
+
+  .bold-button:hover {
+    background-color: #e0a800;
+  }
+</style>
+  
 <meta name="google-site-verification" content="nfRMF4fmQ3qbUPJEciRlK6UEkWba62r4PoH3EeK6GYQ" />
   <div class="menu-icon" onclick="toggleMenu()">⋮</div>
   <div class="menu-dropdown" id="dropdown">
@@ -275,13 +295,12 @@ Reference: Your Name + ID
   
 </body>
 </html>
-
-
-<button onclick="window.location.href='payment.html'">Make a Payment</button>
-
-<div style="text-align: center; margin-top: 30px;">
-  <a href="brokers.html" class="btn" style="background-color: #000; color: gold; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Explore Our Brokers</a>
+<div style="text-align: center;">
+  <button class="bold-button">Make a Payment</button>
+  <button class="bold-button">Explore Our Brokers</button>
+  <button class="bold-button">Show Forex News</button>
 </div>
+
 </section>
 <section id="channels">
   <h4>Other Channels</h4>
