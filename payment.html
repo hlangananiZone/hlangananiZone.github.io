@@ -1,0 +1,29 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Hlanganani Mentorship Payment</title>
+</head>
+<body>
+
+  <h2>Secure Payment Portal</h2>
+  <p>Select your plan and proceed with payment:</p>
+
+  <!-- PayFast Form Goes Here -->
+  <form action="https://sandbox.payfast.co.za/eng/process" method="post">
+    <input type="hidden" name="merchant_id" value="10000100">
+    <input type="hidden" name="merchant_key" value="46f0cd694581a">
+    <input type="hidden" name="return_url" value="https://hlangananizone.github.io/success.html">
+    <input type="hidden" name="cancel_url" value="https://hlangananizone.github.io/cancel.html">
+    <input type="hidden" name="notify_url" value="https://hlangananizone.github.io/notify">
+    <input type="hidden" name="amount" value="150.00">
+    <input type="hidden" name="item_name" value="Hlanganani Mentorship - Tier 1">
+    <input type="hidden" name="item_description" value="Basic education and 1x weekly call">
+    <button type="submit" style="padding:10px 20px;background-color:#003366;color:#fff;border:none;border-radius:5px;cursor:pointer;">
+      Pay Now with PayFast (R150)
+    </button>
+      </form>
+      </body>
+</html>
+ 
